@@ -144,7 +144,7 @@ class WalletsPage extends StatelessWidget {   //Экран кошельков
       body: Column(
         children :[
           ButtonTheme(
-              height: 60, minWidth: 360,
+              height: 61, minWidth: 360,
 
               child: RaisedButton(
                 child: Text('Кошелек 0', style: TextStyle(fontSize: 20)),
@@ -165,6 +165,7 @@ class WalletsPage extends StatelessWidget {   //Экран кошельков
     );
   }
 }
+//Болгов лох
 class ReportsPage extends StatelessWidget {   //Экран отчетов
   Widget build(BuildContext context) {
     return Scaffold(
