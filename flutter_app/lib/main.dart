@@ -98,7 +98,9 @@ class _TabsPageState extends State<SettingsPage>{
       appBar: new AppBar(
         title: new Text("Настройки"),
       ),
-      body: new Container( alignment: FractionalOffset(0.95, 0.02),
+      body: Column(
+        children:[
+        new Container( alignment: FractionalOffset(0.95, 0.02),
 
         child:  SwitchListTile(
           title: Text("Тёмная тема"),
@@ -118,6 +120,60 @@ class _TabsPageState extends State<SettingsPage>{
 
         ),
       ),
+          new Container( alignment: FractionalOffset(0.95, 0.02),
+            decoration: BoxDecoration(
+                border: Border.all(
+                  width: 0.05,
+                )
+            ),
+
+            child:  SwitchListTile(
+              title: Text("Уведомления"),
+              value: isInstructionView,
+              onChanged: (bool isOn) {
+                print(isOn);
+                setState(() {
+                  isInstructionView = isOn;
+                  Global.shared.isInstructionView = isOn;
+                  isOn =!isOn;
+                  print(isInstructionView);
+                });
+              },
+              activeColor: Colors.green,
+              inactiveTrackColor: Colors.red,
+              inactiveThumbColor: Colors.red,
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+                border: Border.all(
+                  width: 0.05,
+                )
+            ),
+            child: ButtonTheme(
+              height: 60,
+              minWidth: 400,
+              child: RaisedButton(
+                onPressed: (){} ,
+                child: Text('Язык', style: TextStyle(fontSize: 16)),
+                color: Colors.grey[50],
+              ),
+            ),
+          ),
+          new Container(
+            height: 60,
+            padding: EdgeInsets.all(20),
+            child: new Text("Выбранная валюта" , style: TextStyle(fontSize: 16)),
+            alignment: Alignment.topLeft,
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 0.05,
+              )
+            ),
+          ),
+        ]
+      ),
 
     );
   }
@@ -131,7 +187,8 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Шаблоны'),),
+      appBar: AppBar(title: Text('Шаблоны'),
+      ),
 
     );
   }
