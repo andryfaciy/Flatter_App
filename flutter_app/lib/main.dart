@@ -117,7 +117,6 @@ class _TabsPageState extends State<SettingsPage>{
           activeColor: Colors.green,
           inactiveTrackColor: Colors.red,
           inactiveThumbColor: Colors.red,
-
         ),
       ),
           new Container( alignment: FractionalOffset(0.95, 0.02),
@@ -144,22 +143,23 @@ class _TabsPageState extends State<SettingsPage>{
               inactiveThumbColor: Colors.red,
             ),
           ),
-          Container(
+          GestureDetector(
+            onTap: () {
+              print("Tapped a Container");
+            },
+            child: Container(
+            height: 60,
+            width: MediaQuery.of(context).size.width,
             alignment: Alignment.centerLeft,
             decoration: BoxDecoration(
                 border: Border.all(
                   width: 0.05,
                 )
             ),
-            child: ButtonTheme(
-              height: 60,
-              minWidth: 400,
-              child: RaisedButton(
-                onPressed: (){} ,
-                child: Text('Язык', style: TextStyle(fontSize: 16)),
-                color: Colors.grey[50],
-              ),
-            ),
+           child: Padding(
+             padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+             child: Text("Даниил привет",style: TextStyle(fontSize: 16), textAlign: TextAlign.left),),
+          ),
           ),
           new Container(
             height: 60,
@@ -183,16 +183,17 @@ class Global{
   static final shared =Global();
   bool isInstructionView = false;
 }
+
 class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Шаблоны'),
       ),
-
     );
   }
 }
+
 class WalletsPage extends StatelessWidget {   //Экран кошельков
   @override
   Widget build(BuildContext context) {
@@ -207,12 +208,14 @@ class WalletsPage extends StatelessWidget {   //Экран кошельков
     );
   }
 }
+
 class BodyLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _myListView(context);
   }
 }
+
 Widget _myListView(BuildContext context) {
   return ListView(
     children: ListTile.divideTiles(
@@ -232,8 +235,6 @@ Widget _myListView(BuildContext context) {
   );
 }
 
-
-//Болгов лох
 class ReportsPage extends StatelessWidget {   //Экран отчетов
   Widget build(BuildContext context) {
     return Scaffold(
