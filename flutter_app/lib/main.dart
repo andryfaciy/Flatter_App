@@ -272,7 +272,8 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
   }
 }
 
-class WalletsPage extends StatelessWidget {   //Экран кошельков
+class WalletsPage extends StatelessWidget {
+  //Экран кошельков
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -280,7 +281,15 @@ class WalletsPage extends StatelessWidget {   //Экран кошельков
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(title: Text('Кошельки')),
+        appBar: AppBar(
+          title: Text('Кошельки'),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+            ),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+        ),
         body: BodyLayout(),
       ),
     );
