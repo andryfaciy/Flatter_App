@@ -9,6 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       home: new MyHomePage(),
     );
   }
@@ -28,52 +29,66 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       drawer: new Drawer(
           child: new ListView(
-            children: <Widget>[
-              new AppBar(
-                title: new Text('Меню'),
-              ),
-              ButtonTheme(
-                height: 60,
-                child: RaisedButton(
-                  onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => MyHomePage()));},
-                  child: Text('История', style: TextStyle(fontSize: 15)),
-                  color: Colors.white,
-                ),
-              ),
-              ButtonTheme(
-                height: 60,
-                child: RaisedButton(
-                  onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => TemplatesPage()));},
-                  child: Text('Шаблоны', style: TextStyle(fontSize: 15)),
-                  color: Colors.white,
-                ),
-              ),
-              ButtonTheme(
-                height: 60,
-                child: RaisedButton(
-                  onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => ReportsPage()));},
-                  child: Text('Отчеты', style: TextStyle(fontSize: 15)),
-                  color: Colors.white,
-                ),
-              ),
-              ButtonTheme(
-                height: 60,
-                child: RaisedButton(
-                  onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => SettingsPage()));},
-                  child: Text('Настройки', style: TextStyle(fontSize: 15)),
-                  color: Colors.white,
-                ),
-              ),
-              ButtonTheme(
-                  height: 60,
-                  child: RaisedButton(
-                    onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => WalletsPage()));},
-                    child: Text('Кошельки', style: TextStyle(fontSize: 15)),
-                    color: Colors.white,
-                  ))
-
-            ],
-          )),
+        children: <Widget>[
+          new AppBar(
+            title: new Text('Меню'),
+          ),
+          ButtonTheme(
+            height: 60,
+            child: RaisedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyHomePage()));
+              },
+              child: Text('История', style: TextStyle(fontSize: 15)),
+              color: Colors.white,
+            ),
+          ),
+          ButtonTheme(
+            height: 60,
+            child: RaisedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TemplatesPage()));
+              },
+              child: Text('Шаблоны', style: TextStyle(fontSize: 15)),
+              color: Colors.white,
+            ),
+          ),
+          ButtonTheme(
+            height: 60,
+            child: RaisedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ReportsPage()));
+              },
+              child: Text('Отчеты', style: TextStyle(fontSize: 15)),
+              color: Colors.white,
+            ),
+          ),
+          ButtonTheme(
+            height: 60,
+            child: RaisedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingsPage()));
+              },
+              child: Text('Настройки', style: TextStyle(fontSize: 15)),
+              color: Colors.white,
+            ),
+          ),
+          ButtonTheme(
+              height: 60,
+              child: RaisedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => WalletsPage()));
+                },
+                child: Text('Кошельки', style: TextStyle(fontSize: 15)),
+                color: Colors.white,
+              ))
+        ],
+      )),
     );
   }
 }
@@ -83,13 +98,13 @@ class SettingsPage extends StatefulWidget {
   State<StatefulWidget> createState() => new _TabsPageState();
 }
 
-class _TabsPageState extends State<SettingsPage>{
-  bool lights;
+class _TabsPageState extends State<SettingsPage> {
   bool isInstructionView;
+  bool isInstructionTheme;
   @override
   void initState() {
     isInstructionView = Global.shared.isInstructionView;
-    lights = Global.shared.lights;
+    isInstructionTheme = Global.shared.isInstructionView;
     super.initState();
   }
 
@@ -99,174 +114,101 @@ class _TabsPageState extends State<SettingsPage>{
       appBar: new AppBar(
         title: new Text("Настройки"),
       ),
-      body: Column(
-        children:[
-        new Container( alignment: FractionalOffset(0.95, 0.02),
-        child:  SwitchListTile(
-          title: Text("Тёмная тема", style: TextStyle(fontSize: 16)),
-          value: isInstructionView,
-          onChanged: (bool isOn) {
-            print(isOn);
-            setState(() {
-              isInstructionView = isOn;
-              Global.shared.isInstructionView = isOn;
-              isOn =!isOn;
-              print(isInstructionView);
-            });
-          },
-          activeColor: Colors.green,
-          inactiveTrackColor: Colors.red,
-          inactiveThumbColor: Colors.red,
-        ),
-      ),
-          new Container( alignment: FractionalOffset(0.95, 0.02),
-            decoration: BoxDecoration(
-                border: Border.all(
-                  width: 0.05,
-                )
-            ),
-            child:  SwitchListTile(
-              title: Text("Уведомления", style: TextStyle(fontSize: 16)),
-              value: lights,
-              onChanged: (bool isOn) {
-                print(isOn);
-                setState(() {
-                  lights = isOn;
-                  Global.shared.lights = isOn;
-                  isOn =!isOn;
-                  print(lights);
-                });
-              },
-              activeColor: Colors.green,
-              inactiveTrackColor: Colors.red,
-              inactiveThumbColor: Colors.red,
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              print("Tapped a Container");
+      body: Column(children: [
+        new Container(
+          alignment: FractionalOffset(0.95, 0.02),
+          child: SwitchListTile(
+            title: Text("Тёмная тема"),
+            value: isInstructionTheme,
+            onChanged: (bool isOn) {
+              print(isOn);
+              setState(() {
+                isInstructionTheme = isOn;
+                Global.shared.isInstructionView = isOn;
+                isOn = !isOn;
+                print(isInstructionTheme);
+              });
             },
-            child: Container(
+            activeColor: Colors.green,
+            inactiveTrackColor: Colors.red,
+            inactiveThumbColor: Colors.red,
+          ),
+        ),
+        new Container(
+          alignment: FractionalOffset(0.95, 0.02),
+          decoration: BoxDecoration(
+              border: Border.all(
+            width: 0.05,
+          )),
+          child: SwitchListTile(
+            title: Text("Уведомления"),
+            value: isInstructionView,
+            onChanged: (bool isOn) {
+              print(isOn);
+              setState(() {
+                isInstructionView = isOn;
+                Global.shared.isInstructionView = isOn;
+                isOn = !isOn;
+                print(isInstructionView);
+              });
+            },
+            activeColor: Colors.green,
+            inactiveTrackColor: Colors.red,
+            inactiveThumbColor: Colors.red,
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            print("Tapped a Container");
+          },
+          child: Container(
             height: 60,
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.centerLeft,
             decoration: BoxDecoration(
                 border: Border.all(
-                  width: 0.05,
-                )
-            ),
-           child: Padding(
-             padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
-             child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                 Container(
-                   height: 35,
-                   child: Text("Язык", style: TextStyle(fontSize: 16)),
-                 ),
-                 Container(
-                   height: 14,
-                   child: Text("Русский",style: TextStyle(fontSize: 12 , color: Colors.blue), textAlign: TextAlign.left),
-                 ),
-               ],
-             ),
-           ),
-          ),
-          ),
-          GestureDetector(
-            onTap: () {
-              print("Tapped a Container");
-            },
-            child: Container(
-              height: 60,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.05,
-                  )
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
-                child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                             Container(
-                                   height: 35,
-                                   child: Text("Выбранная валюта", style: TextStyle(fontSize: 16)),
-                              ),
-                             Container(
-                                   height: 14,
-                                   child: Text("Российский рубль",style: TextStyle(fontSize: 12 , color: Colors.blue), textAlign: TextAlign.left),
-                             ),
-                             ],
-                ),
-                 ),
+              width: 0.05,
+            )),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+              child: Text("Даниил привет",
+                  style: TextStyle(fontSize: 16), textAlign: TextAlign.left),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              print("Tapped a Container");
-            },
-            child: Container(
-              height: 60,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.05,
-                  )
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
-                child: Column(
-                  children: [
-                    Text("Резервная копия" , style: TextStyle(fontSize: 16))
-                  ],
-                ),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              print("Tapped a Container");
-            },
-            child: Container(
-              height: 60,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.05,
-                  )
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
-                child: Column(
-                  children: [
-                    Text("Обратная связь" , style: TextStyle(fontSize: 16))
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ]
-      ),
+        ),
+        new Container(
+          height: 60,
+          padding: EdgeInsets.all(20),
+          child: new Text("Выбранная валюта", style: TextStyle(fontSize: 16)),
+          alignment: Alignment.topLeft,
+          decoration: BoxDecoration(
+              border: Border.all(
+            width: 0.05,
+          )),
+        ),
+      ]),
     );
   }
 }
 
-class Global{
-  static final shared =Global();
+class Global {
+  static final shared = Global();
   bool isInstructionView = false;
-  bool lights = false;
 }
 
-class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
+class TemplatesPage extends StatelessWidget {
+  //Экран Шаблоны
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Шаблоны'),
+      appBar: AppBar(
+        title: Text('Шаблоны'),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+          onPressed: () => Navigator.pop(context, false),
+        ),
       ),
     );
   }
@@ -322,10 +264,13 @@ Widget _myListView(BuildContext context) {
   );
 }
 
-class ReportsPage extends StatelessWidget {   //Экран отчетов
+class ReportsPage extends StatelessWidget {
+  //Экран отчетов
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Отчеты'),),
+      appBar: AppBar(
+        title: Text('Отчеты'),
+      ),
     );
   }
 }
