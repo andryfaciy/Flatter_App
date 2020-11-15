@@ -79,16 +79,17 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class SettingsPage extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() => new _TabsPageState();
 }
 
 class _TabsPageState extends State<SettingsPage>{
+  bool lights;
   bool isInstructionView;
   @override
   void initState() {
     isInstructionView = Global.shared.isInstructionView;
+    lights = Global.shared.lights;
     super.initState();
   }
 
@@ -101,9 +102,8 @@ class _TabsPageState extends State<SettingsPage>{
       body: Column(
         children:[
         new Container( alignment: FractionalOffset(0.95, 0.02),
-
         child:  SwitchListTile(
-          title: Text("Тёмная тема"),
+          title: Text("Тёмная тема", style: TextStyle(fontSize: 16)),
           value: isInstructionView,
           onChanged: (bool isOn) {
             print(isOn);
@@ -125,17 +125,16 @@ class _TabsPageState extends State<SettingsPage>{
                   width: 0.05,
                 )
             ),
-
             child:  SwitchListTile(
-              title: Text("Уведомления"),
-              value: isInstructionView,
+              title: Text("Уведомления", style: TextStyle(fontSize: 16)),
+              value: lights,
               onChanged: (bool isOn) {
                 print(isOn);
                 setState(() {
-                  isInstructionView = isOn;
-                  Global.shared.isInstructionView = isOn;
+                  lights = isOn;
+                  Global.shared.lights = isOn;
                   isOn =!isOn;
-                  print(isInstructionView);
+                  print(lights);
                 });
               },
               activeColor: Colors.green,
@@ -157,24 +156,102 @@ class _TabsPageState extends State<SettingsPage>{
                 )
             ),
            child: Padding(
-             padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-             child: Text("Даниил привет",style: TextStyle(fontSize: 16), textAlign: TextAlign.left),),
+             padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
+             child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
+                 Container(
+                   height: 35,
+                   child: Text("Язык", style: TextStyle(fontSize: 16)),
+                 ),
+                 Container(
+                   height: 14,
+                   child: Text("Русский",style: TextStyle(fontSize: 12 , color: Colors.blue), textAlign: TextAlign.left),
+                 ),
+               ],
+             ),
+           ),
           ),
           ),
-          new Container(
-            height: 60,
-            padding: EdgeInsets.all(20),
-            child: new Text("Выбранная валюта" , style: TextStyle(fontSize: 16)),
-            alignment: Alignment.topLeft,
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 0.05,
-              )
+          GestureDetector(
+            onTap: () {
+              print("Tapped a Container");
+            },
+            child: Container(
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 0.05,
+                  )
+              ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
+                child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                             Container(
+                                   height: 35,
+                                   child: Text("Выбранная валюта", style: TextStyle(fontSize: 16)),
+                              ),
+                             Container(
+                                   height: 14,
+                                   child: Text("Российский рубль",style: TextStyle(fontSize: 12 , color: Colors.blue), textAlign: TextAlign.left),
+                             ),
+                             ],
+                ),
+                 ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              print("Tapped a Container");
+            },
+            child: Container(
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 0.05,
+                  )
+              ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
+                child: Column(
+                  children: [
+                    Text("Резервная копия" , style: TextStyle(fontSize: 16))
+                  ],
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              print("Tapped a Container");
+            },
+            child: Container(
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 0.05,
+                  )
+              ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
+                child: Column(
+                  children: [
+                    Text("Обратная связь" , style: TextStyle(fontSize: 16))
+                  ],
+                ),
+              ),
             ),
           ),
         ]
       ),
-
     );
   }
 }
@@ -182,6 +259,7 @@ class _TabsPageState extends State<SettingsPage>{
 class Global{
   static final shared =Global();
   bool isInstructionView = false;
+  bool lights = false;
 }
 
 class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
@@ -239,7 +317,6 @@ class ReportsPage extends StatelessWidget {   //Экран отчетов
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Отчеты'),),
-
     );
   }
 }
