@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
       home: new MyHomePage(),
     );
   }
@@ -86,11 +86,9 @@ class SettingsPage extends StatefulWidget {
 
 class _TabsPageState extends State<SettingsPage>{
   bool isInstructionView;
-  bool isInstructionTheme;
   @override
   void initState() {
     isInstructionView = Global.shared.isInstructionView;
-    isInstructionTheme = Global.shared.isInstructionView;
     super.initState();
   }
 
@@ -101,80 +99,80 @@ class _TabsPageState extends State<SettingsPage>{
         title: new Text("Настройки"),
       ),
       body: Column(
-          children:[
-            new Container( alignment: FractionalOffset(0.95, 0.02),
+        children:[
+        new Container( alignment: FractionalOffset(0.95, 0.02),
 
-              child:  SwitchListTile(
-                title: Text("Тёмная тема"),
-                value: isInstructionTheme,
-                onChanged: (bool isOn) {
-                  print(isOn);
-                  setState(() {
-                    isInstructionTheme = isOn;
-                    Global.shared.isInstructionView = isOn;
-                    isOn =!isOn;
-                    print(isInstructionTheme);
-                  });
-                },
-                activeColor: Colors.green,
-                inactiveTrackColor: Colors.red,
-                inactiveThumbColor: Colors.red,
-              ),
+        child:  SwitchListTile(
+          title: Text("Тёмная тема"),
+          value: isInstructionView,
+          onChanged: (bool isOn) {
+            print(isOn);
+            setState(() {
+              isInstructionView = isOn;
+              Global.shared.isInstructionView = isOn;
+              isOn =!isOn;
+              print(isInstructionView);
+            });
+          },
+          activeColor: Colors.green,
+          inactiveTrackColor: Colors.red,
+          inactiveThumbColor: Colors.red,
+        ),
+      ),
+          new Container( alignment: FractionalOffset(0.95, 0.02),
+            decoration: BoxDecoration(
+                border: Border.all(
+                  width: 0.05,
+                )
             ),
-            new Container( alignment: FractionalOffset(0.95, 0.02),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.05,
-                  )
-              ),
 
-              child:  SwitchListTile(
-                title: Text("Уведомления"),
-                value: isInstructionView,
-                onChanged: (bool isOn) {
-                  print(isOn);
-                  setState(() {
-                    isInstructionView = isOn;
-                    Global.shared.isInstructionView = isOn;
-                    isOn =!isOn;
-                    print(isInstructionView);
-                  });
-                },
-                activeColor: Colors.green,
-                inactiveTrackColor: Colors.red,
-                inactiveThumbColor: Colors.red,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                print("Tapped a Container");
+            child:  SwitchListTile(
+              title: Text("Уведомления"),
+              value: isInstructionView,
+              onChanged: (bool isOn) {
+                print(isOn);
+                setState(() {
+                  isInstructionView = isOn;
+                  Global.shared.isInstructionView = isOn;
+                  isOn =!isOn;
+                  print(isInstructionView);
+                });
               },
-              child: Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 0.05,
-                    )
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-                  child: Text("Даниил привет",style: TextStyle(fontSize: 16), textAlign: TextAlign.left),),
-              ),
+              activeColor: Colors.green,
+              inactiveTrackColor: Colors.red,
+              inactiveThumbColor: Colors.red,
             ),
-            new Container(
-              height: 60,
-              padding: EdgeInsets.all(20),
-              child: new Text("Выбранная валюта" , style: TextStyle(fontSize: 16)),
-              alignment: Alignment.topLeft,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.05,
-                  )
-              ),
+          ),
+          GestureDetector(
+            onTap: () {
+              print("Tapped a Container");
+            },
+            child: Container(
+            height: 60,
+            width: MediaQuery.of(context).size.width,
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+                border: Border.all(
+                  width: 0.05,
+                )
             ),
-          ]
+           child: Padding(
+             padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+             child: Text("Даниил привет",style: TextStyle(fontSize: 16), textAlign: TextAlign.left),),
+          ),
+          ),
+          new Container(
+            height: 60,
+            padding: EdgeInsets.all(20),
+            child: new Text("Выбранная валюта" , style: TextStyle(fontSize: 16)),
+            alignment: Alignment.topLeft,
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 0.05,
+              )
+            ),
+          ),
+        ]
       ),
 
     );
@@ -190,11 +188,7 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Шаблоны'),leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-        ),
-        onPressed:() => Navigator.pop(context, false),),
+      appBar: AppBar(title: Text('Шаблоны'),
       ),
     );
   }
@@ -208,11 +202,7 @@ class WalletsPage extends StatelessWidget {   //Экран кошельков
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(title: Text('Кошельки'),leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-          ),
-          onPressed:() => Navigator.pop(context, false),),),
+        appBar: AppBar(title: Text('Кошельки')),
         body: BodyLayout(),
       ),
     );
