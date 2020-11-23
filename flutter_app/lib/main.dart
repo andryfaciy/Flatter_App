@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+
 void main() {
   runApp(new MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -14,10 +16,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
+
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
@@ -78,10 +82,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+
 class SettingsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _TabsPageState();
 }
+
 
 class _TabsPageState extends State<SettingsPage>{
   bool lights;
@@ -92,6 +98,7 @@ class _TabsPageState extends State<SettingsPage>{
     lights = Global.shared.lights;
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -256,11 +263,13 @@ class _TabsPageState extends State<SettingsPage>{
   }
 }
 
+
 class Global{
   static final shared =Global();
   bool isInstructionView = false;
   bool lights = false;
 }
+
 
 class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
   @override
@@ -268,10 +277,8 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
     return Scaffold(
       appBar: AppBar(title: Text('Шаблоны'),
       ),
-      body: Column(
-        children: [
-          Column(
-            children: [
+      body: ListView(
+          children: <Widget>[
               GestureDetector(
                 onTap: () {
                   print("Tapped a Container");
@@ -483,22 +490,15 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
                 ),
               ),
             ],
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(0, 400, 0, 0) ,
-            child: ButtonTheme(
-              child: RaisedButton(
-                onPressed: () {print("Tapped a Button");},
-                child: Text('+', style: TextStyle(fontSize: 50 , color: Colors.white)),
-                color: Colors.blue,
-              ),
-            ),
-          ),
-        ],
       ),
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
+        )
     );
   }
 }
+
 
 class WalletsPage extends StatelessWidget {
   //Экран кошельков
