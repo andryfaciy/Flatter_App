@@ -24,86 +24,27 @@ class MyHomePage extends StatefulWidget {
 
 
 class _MyHomePageState extends State<MyHomePage> {
+  int value = 2;
+
+  _addItem() {
+    setState(() {
+      value = value + 1;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('История'),
       ),
-      body: new ListView(children: <Widget>[
-        new Text('Сдесь'),
-        new Divider(),
-        new Text('или'),
-        new Divider(),
-        new Text('здесь'),
-        new Divider(),
-        new Text('будет'),
-        new Divider(),
-        new Text('прокручиваемый'),
-        new Divider(),
-        new Text('список'),
-        new Divider(),
-        new Text('всех'),
-        new Divider(),
-        new Text('транзакций'),
-        new Divider(),
-        new Text('дальше'),
-        new Divider(),
-        new Text('числа'),
-        new Divider(),
-        new Text('для'),
-        new Divider(),
-        new Text('количества'),
-        new Divider(),
-        new Text('13'),
-        new Divider(),
-        new Text('14'),
-        new Divider(),
-        new Text('15'),
-        new Divider(),
-        new Text('16'),
-        new Divider(),
-        new Text('17'),
-        new Divider(),
-        new Text('18'),
-        new Divider(),
-        new Text('19'),
-        new Divider(),
-        new Text('20'),
-        new Divider(),
-        new Text('21'),
-        new Divider(),
-        new Text('21'),
-        new Divider(),
-        new Text('22'),
-        new Divider(),
-        new Text('23'),
-        new Divider(),
-        new Text('24'),
-        new Divider(),
-        new Text('25'),
-        new Divider(),
-        new Text('26'),
-        new Divider(),
-        new Text('27'),
-        new Divider(),
-        new Text('28'),
-        new Divider(),
-        new Text('29'),
-        new Divider(),
-        new Text('30'),
-        new Divider(),
-        new Text('31'),
-        new Divider(),
-        new Text('32'),
-        new Divider(),
-        new Text('33'),
-        new Divider(),
-        new Text('34'),
-        new Divider(),
-        new Text('35'),
-      ]),
-      drawer: new Drawer(
+      body: ListView.builder(
+          itemCount: this.value,
+          itemBuilder: (context, index) => this._buildRow(index)),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addItem,
+        child: Icon(Icons.add),
+      ),
+     drawer: new Drawer(
           child: new ListView(
             children: <Widget>[
               new AppBar(
@@ -150,11 +91,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   ))
 
             ],
-          )),
+    ),
+    ),
     );
-  }
-}
 
+  }
+  _buildRow(int index) {
+    return Text("Item " + index.toString());}
+}
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -387,7 +331,7 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
                         ),
                       ),
 
-                          Text("-23345", style: TextStyle(fontSize: 18 , color : Colors.red , fontWeight: FontWeight.bold ))
+                      Text("-23345", style: TextStyle(fontSize: 18 , color : Colors.red , fontWeight: FontWeight.bold ))
 
                     ],
                   ),
@@ -468,7 +412,7 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
                       ),
 
 
-                         Text("-32345", style: TextStyle(fontSize: 18 , color : Colors.red , fontWeight: FontWeight.bold ))
+                      Text("-32345", style: TextStyle(fontSize: 18 , color : Colors.red , fontWeight: FontWeight.bold ))
 
                     ],
                   ),
@@ -510,7 +454,7 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
                       ),
 
 
-                          Text("+2500", style: TextStyle(fontSize: 18 , color : Colors.green , fontWeight: FontWeight.bold ))
+                      Text("+2500", style: TextStyle(fontSize: 18 , color : Colors.green , fontWeight: FontWeight.bold ))
 
                     ],
                   ),
@@ -551,7 +495,7 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
                         ),
                       ),
 
-                          Text("-650023", style: TextStyle(fontSize: 18 , color : Colors.red , fontWeight: FontWeight.bold ))
+                      Text("-650023", style: TextStyle(fontSize: 18 , color : Colors.red , fontWeight: FontWeight.bold ))
 
                     ],
                   ),
@@ -575,115 +519,120 @@ class WalletsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Кошельки'),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
+        appBar: AppBar(
+          title: Text('Кошельки'),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+            ),
+            onPressed: () => Navigator.pop(context, false),
           ),
-          onPressed: () => Navigator.pop(context, false),
         ),
-      ),
-      body: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              print("Tapped a Container");
-            },
-            child: Container(
-              height: 60,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.05,
-                  )
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
-                      width: 200,
-                      child: Text("Кошелек 1" , style: TextStyle(fontSize: 16)),
-                    ),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(100, 5, 0, 0),
-                        child: Text("65023 Р", style: TextStyle(fontSize: 18 , color : Colors.blue , fontWeight: FontWeight.bold ))
-                    ),
-                  ],
+        body: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                print("Tapped a Container");
+              },
+              child: Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 0.05,
+                    )
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
+                        width: 200,
+                        child: Text("Кошелек 1" , style: TextStyle(fontSize: 16)),
+                      ),
+                      Container(
+                          padding: EdgeInsets.fromLTRB(100, 5, 0, 0),
+                          child: Text("65023 Р", style: TextStyle(fontSize: 18 , color : Colors.blue , fontWeight: FontWeight.bold ))
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              print("Tapped a Container");
-            },
-            child: Container(
-              height: 60,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.05,
-                  )
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
-                      width: 200,
-                      child: Text("Кошелек 2" , style: TextStyle(fontSize: 16)),
-                    ),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(100, 5, 0, 0),
-                        child: Text("6523 Р", style: TextStyle(fontSize: 18 , color : Colors.blue , fontWeight: FontWeight.bold ))
-                    ),
-                  ],
+            GestureDetector(
+              onTap: () {
+                print("Tapped a Container");
+              },
+              child: Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 0.05,
+                    )
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
+                        width: 200,
+                        child: Text("Кошелек 2" , style: TextStyle(fontSize: 16)),
+                      ),
+                      Container(
+                          padding: EdgeInsets.fromLTRB(100, 5, 0, 0),
+                          child: Text("6523 Р", style: TextStyle(fontSize: 18 , color : Colors.blue , fontWeight: FontWeight.bold ))
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              print("Tapped a Container");
-            },
-            child: Container(
-              height: 60,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.05,
-                  )
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
-                      width: 200,
-                      child: Text("Кошелек 3" , style: TextStyle(fontSize: 16)),
-                    ),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(100, 5, 0, 0),
-                        child: Text("50232 Р", style: TextStyle(fontSize: 18 , color : Colors.blue , fontWeight: FontWeight.bold ))
-                    ),
-                  ],
+            GestureDetector(
+              onTap: () {
+                print("Tapped a Container");
+              },
+              child: Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 0.05,
+                    )
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
+                        width: 200,
+                        child: Text("Кошелек 3" , style: TextStyle(fontSize: 16)),
+                      ),
+                      Container(
+                          padding: EdgeInsets.fromLTRB(100, 5, 0, 0),
+                          child: Text("50232 Р", style: TextStyle(fontSize: 18 , color : Colors.blue , fontWeight: FontWeight.bold ))
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ) ,
+          ],
+        ) ,
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
+          onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => Newswallet()));},
+        )
     );
   }
 }
@@ -706,26 +655,26 @@ class Newshablone extends StatelessWidget {   //Экран создания но
           children: [
 
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    color: Colors.blue[600],
-                    padding: EdgeInsets.fromLTRB(40, 40, 0, 0) ,
-                    height: 100,
-                    width: MediaQuery.of(context).size.width / 2 ,
-                    child :
-                    Text("Расход" , style: TextStyle(fontSize: 18 ,  fontWeight: FontWeight.bold )),
-                  ),
-                  Container(
-                    height: 100,
-                    width: MediaQuery.of(context).size.width / 2,
-                    padding: EdgeInsets.fromLTRB(100, 40, 0, 0) ,
-                    child:
-                    Text("Доход" , style: TextStyle(fontSize: 18 ,  fontWeight: FontWeight.bold )),
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  color: Colors.blue[600],
+                  padding: EdgeInsets.fromLTRB(40, 40, 0, 0) ,
+                  height: 100,
+                  width: MediaQuery.of(context).size.width / 2 ,
+                  child :
+                  Text("Расход" , style: TextStyle(fontSize: 18 ,  fontWeight: FontWeight.bold )),
+                ),
+                Container(
+                  height: 100,
+                  width: MediaQuery.of(context).size.width / 2,
+                  padding: EdgeInsets.fromLTRB(100, 40, 0, 0) ,
+                  child:
+                  Text("Доход" , style: TextStyle(fontSize: 18 ,  fontWeight: FontWeight.bold )),
+                ),
+              ],
+            ),
 
             GestureDetector(
               onTap: () {
@@ -810,7 +759,7 @@ class Newshablone extends StatelessWidget {   //Экран создания но
                     )
                 ),
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 5, 0, 5),
+                  padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -841,7 +790,7 @@ class Newshablone extends StatelessWidget {   //Экран создания но
                     )
                 ),
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 5, 0, 5),
+                  padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -853,6 +802,116 @@ class Newshablone extends StatelessWidget {   //Экран создания но
                         height: 14,
                         child: Text("1 месяц",style: TextStyle(fontSize: 12 , color: Colors.blue), textAlign: TextAlign.left),
                       ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
+          onPressed: () {},
+        )
+    );
+  }
+}
+
+class Newswallet extends StatelessWidget {   //Экран создания новыго шаблона
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: Text('Создание нового кошелька'),),
+        body: ListView(
+
+          children: [
+            GestureDetector(
+              onTap: () {
+                print("Tapped a Container");
+              },
+              child: Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 0.05,
+                    )
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
+                  child: Column(
+                    children: [
+                      Text("Название" , style: TextStyle(fontSize: 16))
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                print("Tapped a Container");
+              },
+              child: Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 0.05,
+                    )
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
+                  child: Column(
+                    children: [
+                      Text("Баланс" , style: TextStyle(fontSize: 16))
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                print("Tapped a Container");
+              },
+              child: Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 0.05,
+                    )
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
+                  child: Column(
+                    children: [
+                      Text("Иконка" , style: TextStyle(fontSize: 16))
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                print("Tapped a Container");
+              },
+              child: Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 0.05,
+                    )
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
+                  child: Column(
+                    children: [
+                      Text("Цвет" , style: TextStyle(fontSize: 16))
                     ],
                   ),
                 ),
