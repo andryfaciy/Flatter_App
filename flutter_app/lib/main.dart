@@ -1,105 +1,139 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_hive_example/screens/add_todo/add_transaction.dart';
+import 'models/todo.dart';
+import 'client/hive_names.dart';
 
-
-void main() {
-  runApp(new MyApp());
+void main() async {     //Начало программы
+  //   hive initialization
+  await Hive.initFlutter();
+  Hive.registerAdapter(TodoAdapter());
+  await Hive.openBox<Todo>(HiveBoxes.todo);
+  runApp(MyApp());
 }
 
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
-class MyApp extends StatelessWidget {
+class _MyAppState extends State<MyApp> {
+  @override
+  void dispose() async {
+    Hive.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Just_Finance',
-      home: new MyHomePage(),
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'История транзакций'),
     );
   }
 }
-
 
 class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => new _MyHomePageState();
-}
+  MyHomePage({Key key, this.title}) : super(key: key);
 
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
 
 class _MyHomePageState extends State<MyHomePage> {
-  int value = 2;
-
-  _addItem() {
-    setState(() {
-      value = value + 1;
-    });
-  }
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('История'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
       ),
-      body: ListView.builder(
-          itemCount: this.value,
-          itemBuilder: (context, index) => this._buildRow(index)),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addItem,
+      drawer: new Drawer(     //Боковая выползающая менюшка
+        child: new ListView(
+          children: <Widget>[
+            new AppBar(
+              title: new Text('Меню'),
+            ),
+            ButtonTheme(
+              height: 60,
+              child: RaisedButton(
+                onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => MyHomePage()));},
+                child: Text('История', style: TextStyle(fontSize: 15)),
+                color: Colors.white,
+              ),
+            ),
+            ButtonTheme(
+              height: 60,
+              child: RaisedButton(
+                onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => TemplatesPage()));},
+                child: Text('Шаблоны', style: TextStyle(fontSize: 15)),
+                color: Colors.white,
+              ),
+            ),
+            ButtonTheme(
+              height: 60,
+              child: RaisedButton(
+                onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => SettingsPage()));},
+                child: Text('Настройки', style: TextStyle(fontSize: 15)),
+                color: Colors.white,
+              ),
+            ),
+            ButtonTheme(
+                height: 60,
+                child: RaisedButton(
+                  onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => WalletsPage()));},
+                  child: Text('Кошельки', style: TextStyle(fontSize: 15)),
+                  color: Colors.white,
+                ))
+
+          ],
+        ),
+      ),
+      body: ValueListenableBuilder(
+        valueListenable: Hive.box<Todo>(HiveBoxes.todo).listenable(),
+        builder: (context, Box<Todo> box, _) {
+          if (box.values.isEmpty)
+            return Center(
+              child: Text("Лист транзакций пуст"),
+            );
+          return ListView.builder(          //Список
+            itemCount: box.values.length,
+            itemBuilder: (context, index) {
+              Todo res = box.getAt(index);
+              return Dismissible(
+                background: Container(color: Colors.red),
+                key: UniqueKey(),
+                onDismissed: (direction) {
+                  res.delete();
+                },
+                child: ListTile(
+                    title: Text(res.Summa == null ? '' : res.Summa),
+                    subtitle: Text(res.Data == null ? '' : res.Data),
+                    leading: res.complete
+                        ? Icon(Icons.check_box)
+                        : Icon(Icons.check_box_outline_blank),
+                    onTap: () {
+                      res.complete = !res.complete;
+                      res.save();
+                    }),
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(       //Плавающая кнопка в нижнем правом углу
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => AddTodo())),
+        tooltip: 'Add todo',
         child: Icon(Icons.add),
       ),
-     drawer: new Drawer(
-          child: new ListView(
-            children: <Widget>[
-              new AppBar(
-                title: new Text('Меню'),
-              ),
-              ButtonTheme(
-                height: 60,
-                child: RaisedButton(
-                  onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => MyHomePage()));},
-                  child: Text('История', style: TextStyle(fontSize: 15)),
-                  color: Colors.white,
-                ),
-              ),
-              ButtonTheme(
-                height: 60,
-                child: RaisedButton(
-                  onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => TemplatesPage()));},
-                  child: Text('Шаблоны', style: TextStyle(fontSize: 15)),
-                  color: Colors.white,
-                ),
-              ),
-              ButtonTheme(
-                height: 60,
-                child: RaisedButton(
-                  onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => ReportsPage()));},
-                  child: Text('Отчеты', style: TextStyle(fontSize: 15)),
-                  color: Colors.white,
-                ),
-              ),
-              ButtonTheme(
-                height: 60,
-                child: RaisedButton(
-                  onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => SettingsPage()));},
-                  child: Text('Настройки', style: TextStyle(fontSize: 15)),
-                  color: Colors.white,
-                ),
-              ),
-              ButtonTheme(
-                  height: 60,
-                  child: RaisedButton(
-                    onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => WalletsPage()));},
-                    child: Text('Кошельки', style: TextStyle(fontSize: 15)),
-                    color: Colors.white,
-                  ))
-
-            ],
-    ),
-    ),
     );
-
   }
-  _buildRow(int index) {
-    return Text("Item " + index.toString());}
 }
-
 class SettingsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _TabsPageState();
@@ -119,7 +153,7 @@ class _TabsPageState extends State<SettingsPage>{
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {        //Экран настроек
     return Scaffold(
       appBar: new AppBar(
         title: new Text("Настройки"),
@@ -198,7 +232,7 @@ class _TabsPageState extends State<SettingsPage>{
                 ),
               ),
             ),
-            GestureDetector(
+            GestureDetector(                //Для чего он хуй его знает но пусть будет
               onTap: () {
                 print("Tapped a Container");
               },
@@ -229,7 +263,7 @@ class _TabsPageState extends State<SettingsPage>{
                 ),
               ),
             ),
-            GestureDetector(
+            GestureDetector(        //О5 этот парень
               onTap: () {
                 print("Tapped a Container");
               },
@@ -315,7 +349,7 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      Container(          //Вот эту всю хуету надо удалить и сделать как на главном экране
                         width: 200,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -365,7 +399,7 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
                                 padding: EdgeInsets.fromLTRB(15, 0, 0, 10),
                                 child: Text("Доход" , style: TextStyle(fontSize: 16))),
                             Container(
-                              padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
+                              padding: EdgeInsets.fromLTRB(15, 5, 0, 5),      //И вот это тоже ибо это все визуал
                               child: Text("Зарплата" , style: TextStyle(fontSize: 12 )),
                             ),
                           ],
@@ -514,8 +548,7 @@ class TemplatesPage extends StatelessWidget {   //Экран Шаблоны
 }
 
 
-class WalletsPage extends StatelessWidget {
-  //Экран кошельков
+class WalletsPage extends StatelessWidget {//Экран кошельков тоже самое и что и с шаблонами надо делать пункты как на главном экране
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -637,14 +670,7 @@ class WalletsPage extends StatelessWidget {
   }
 }
 
-
-class ReportsPage extends StatelessWidget {   //Экран отчетов
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Отчеты'),),
-    );
-  }
-}
+//Отчеты я на хуй удалил ибо это юзлес тема
 
 class Newshablone extends StatelessWidget {   //Экран создания новыго шаблона
   Widget build(BuildContext context) {
@@ -888,7 +914,7 @@ class Newswallet extends StatelessWidget {   //Экран создания но�
                   padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
                   child: Column(
                     children: [
-                      Text("Иконка" , style: TextStyle(fontSize: 16))
+                      Text("Иконка" , style: TextStyle(fontSize: 16))  //Надо добавить функционала всей этой части кода
                     ],
                   ),
                 ),
@@ -927,3 +953,4 @@ class Newswallet extends StatelessWidget {   //Экран создания но�
     );
   }
 }
+

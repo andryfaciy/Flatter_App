@@ -1,0 +1,4 @@
+#Sat Dec 12 19:43:27 MSK 2020
+base.0=C\:\\Users\\User\\Desktop\\control_rashodov\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
