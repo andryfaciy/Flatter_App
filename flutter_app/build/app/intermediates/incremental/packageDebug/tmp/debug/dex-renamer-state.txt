@@ -1,4 +1,4 @@
-#Sat Dec 12 19:43:27 MSK 2020
-base.0=C\:\\Users\\User\\Desktop\\control_rashodov\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
-path.0=classes.dex
+#Tue Dec 29 17:45:02 MSK 2020
+base.0=C\:\\Users\\CREative\\Desktop\\project_X\\Flatter_App\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
 renamed.0=classes.dex
+path.0=classes.dex

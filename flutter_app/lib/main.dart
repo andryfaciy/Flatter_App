@@ -4,12 +4,16 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_hive_example/screens/add_todo/add_transaction.dart';
 import 'models/todo.dart';
 import 'client/hive_names.dart';
+import 'models/doing.dart';
+import 'package:todo_hive_example/screens/add_todo/add_wallet.dart';
 
 void main() async {     //Начало программы
   //   hive initialization
   await Hive.initFlutter();
   Hive.registerAdapter(TodoAdapter());
   await Hive.openBox<Todo>(HiveBoxes.todo);
+  await Hive.openBox<Doing>(Hoxes.doing);
+  Hive.registerAdapter(DoingAdapter());
   runApp(MyApp());
 }
 
@@ -561,111 +565,44 @@ class WalletsPage extends StatelessWidget {//Экран кошельков то�
             onPressed: () => Navigator.pop(context, false),
           ),
         ),
-        body: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                print("Tapped a Container");
+        body: ValueListenableBuilder(
+          valueListenable: Hive.box<Doing>(Hoxes.doing).listenable(),
+          builder: (context, Box<Doing> box, _) {
+            if (box.values.isEmpty)
+              return Center(
+                child: Text("Лист транзакций пуст"),
+              );
+            return ListView.builder(          //Список
+              itemCount: box.values.length,
+              itemBuilder: (context, index) {
+                Doing res = box.getAt(index);
+                return Dismissible(
+                  background: Container(color: Colors.red),
+                  key: UniqueKey(),
+                  onDismissed: (direction) {
+                    res.delete();
+                  },
+                  child: ListTile(
+                      title: Text(res.Summa1 == null ? '' : res.Summa1),
+                      subtitle: Text(res.Nazvanie == null ? '' : res.Nazvanie),
+                      leading: res.complete1
+                          ? Icon(Icons.check_box)
+                          : Icon(Icons.check_box_outline_blank),
+                      onTap: () {
+                        res.complete1 = !res.complete1;
+                        res.save();
+                      }),
+                );
               },
-              child: Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 0.05,
-                    )
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
-                        width: 200,
-                        child: Text("Кошелек 1" , style: TextStyle(fontSize: 16)),
-                      ),
-                      Container(
-                          padding: EdgeInsets.fromLTRB(100, 5, 0, 0),
-                          child: Text("65023 Р", style: TextStyle(fontSize: 18 , color : Colors.blue , fontWeight: FontWeight.bold ))
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                print("Tapped a Container");
-              },
-              child: Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 0.05,
-                    )
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
-                        width: 200,
-                        child: Text("Кошелек 2" , style: TextStyle(fontSize: 16)),
-                      ),
-                      Container(
-                          padding: EdgeInsets.fromLTRB(100, 5, 0, 0),
-                          child: Text("6523 Р", style: TextStyle(fontSize: 18 , color : Colors.blue , fontWeight: FontWeight.bold ))
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                print("Tapped a Container");
-              },
-              child: Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 0.05,
-                    )
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
-                        width: 200,
-                        child: Text("Кошелек 3" , style: TextStyle(fontSize: 16)),
-                      ),
-                      Container(
-                          padding: EdgeInsets.fromLTRB(100, 5, 0, 0),
-                          child: Text("50232 Р", style: TextStyle(fontSize: 18 , color : Colors.blue , fontWeight: FontWeight.bold ))
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ) ,
-        floatingActionButton: FloatingActionButton(
-          tooltip: 'Increment',
-          child: Icon(Icons.add),
-          onPressed: () {Navigator.push(context,MaterialPageRoute(builder: (context) => Newswallet()));},
-        )
+            );
+          },
+        ),
+      floatingActionButton: FloatingActionButton(       //Плавающая кнопка в нижнем правом углу
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => AddDoing())),
+        tooltip: 'Add doing',
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
@@ -843,114 +780,3 @@ class Newshablone extends StatelessWidget {   //Экран создания но
     );
   }
 }
-
-class Newswallet extends StatelessWidget {   //Экран создания новыго шаблона
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text('Создание нового кошелька'),),
-        body: ListView(
-
-          children: [
-            GestureDetector(
-              onTap: () {
-                print("Tapped a Container");
-              },
-              child: Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 0.05,
-                    )
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
-                  child: Column(
-                    children: [
-                      Text("Название" , style: TextStyle(fontSize: 16))
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                print("Tapped a Container");
-              },
-              child: Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 0.05,
-                    )
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
-                  child: Column(
-                    children: [
-                      Text("Баланс" , style: TextStyle(fontSize: 16))
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                print("Tapped a Container");
-              },
-              child: Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 0.05,
-                    )
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
-                  child: Column(
-                    children: [
-                      Text("Иконка" , style: TextStyle(fontSize: 16))  //Надо добавить функционала всей этой части кода
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                print("Tapped a Container");
-              },
-              child: Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 0.05,
-                    )
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(15, 20, 0 , 0),
-                  child: Column(
-                    children: [
-                      Text("Цвет" , style: TextStyle(fontSize: 16))
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          tooltip: 'Increment',
-          child: Icon(Icons.add),
-          onPressed: () {},
-        )
-    );
-  }
-}
-
